@@ -43,6 +43,37 @@ function walk_trough_all_subset_lengths(superset) {
   }
 }
 
+function check_sum_divisible_by_n(p, subset) {
+  if (subset_sum(subset) % p == 0) {
+    return true;
+  }
+  return false;
+}
+
+function prime_decompose(n) {
+  let prime_list = [];
+  let i = 2;
+  while (i <= n) {
+    if (n % i == 0) {
+      prime_list.push(i);
+      n = n / i;
+    } else {
+      i += 1;
+    }
+  }
+  return prime_list;
+}
+
+function polynomial_calculator(x, poly_list) {
+  let y = 0;
+  let n = 0;
+  while (n < poly_list.length) {
+    y += poly_list[n] * Math.pow(x, n);
+    n += 1;
+  }
+  return y;
+}
+
 function subset_sum(subset) {
   let sum = 0;
   for (let i = 0; i < subset.length; ++i) {

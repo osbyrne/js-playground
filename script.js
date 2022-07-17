@@ -1,46 +1,37 @@
-function polynomial_calculator(x, poly_list) {
-  let y = 0;
-  let n = 0;
-  while (n < poly_list.length) {
-    y += poly_list[n] * Math.pow(x, n);
-    n += 1;
-  }
-  return y;
-}
+/*----------------------------------------------------------------
 
-function prime_decompose(n) {
-  let prime_list = [];
-  let i = 2;
-  while (i <= n) {
-    if (n % i == 0) {
-      prime_list.push(i);
-      n = n / i;
-    } else {
-      i += 1;
-    }
-  }
-  return prime_list;
-}
+let N be a set of natural numbers from 1 to n
+let sumN be the set of all sums of elements of each subset of N
+let K be the number of elements of sumN divisible by p an element of N
 
-// let N be a set of natural numbers from 1 to n
-// let sumN be the set of all sums of elements of each subset of N
-// let K be the number of elements of sumN divisible by p an element of N
-
-/*
 verify subsets of length 1 to n
 verify all subsets of length k:
     f going from 1 to n:
     array of the element f + subsets of length k-1 not containing elements inferior to f 
+
+1- given an integer n, make a set containing all integers from 1 to n
+2- given a set of integers, make a set of all subsets of length 1
+
 */
 
-function get_number_of_subsets_divisible_by_p(p, set) {
-  let total_subsets_sum_divisible = 0;
+function all_subsets(set) {
+  let subsets = [];
+  for (let i = 1; i < set.length; ++i) {
+    subsets_length_i = get_subsets_length_i(set, i);
+    subsets.push(subsets_length_i);
+  }
+  return subsets;
 }
 
-function walk_trough_all_subset_lengths(superset) {
-  for (let length = 1; length < superset.length + 1; ++length) {
-    subsets_fixed_size(superset, length);
+function get_subsets_length_i(set, i) {
+  let subsets_length_i = [];
+  for (let j = 1; j < set.length; ++j) {
+    subsets_length_i_starting_j = get_subsets_of_length_i(set, i - 1);
+    for (let k = 0; k < subsets_length_i_starting_j.length; ++k) {
+      subsets_length_i_starting_j.unshift(j);
+    }
   }
+  return subsets_length_i;
 }
 
 function check_sum_divisible_by_n(p, subset) {
@@ -48,30 +39,6 @@ function check_sum_divisible_by_n(p, subset) {
     return true;
   }
   return false;
-}
-
-function prime_decompose(n) {
-  let prime_list = [];
-  let i = 2;
-  while (i <= n) {
-    if (n % i == 0) {
-      prime_list.push(i);
-      n = n / i;
-    } else {
-      i += 1;
-    }
-  }
-  return prime_list;
-}
-
-function polynomial_calculator(x, poly_list) {
-  let y = 0;
-  let n = 0;
-  while (n < poly_list.length) {
-    y += poly_list[n] * Math.pow(x, n);
-    n += 1;
-  }
-  return y;
 }
 
 function subset_sum(subset) {
@@ -82,24 +49,6 @@ function subset_sum(subset) {
   return sum;
 }
 
-function subsets_fixed_size(superset, length, minimum_size = 0) {
-  subsets = [];
-  for (let i = 0; i < superset.length; ++i) {
-    if (i > minimum_size) {
-      subset = [superset[i]];
-      subset.concat(subsets_fixed_size(superset, length, superset[i]));
-
-      increment_result(check_sum_divisible_by_n(n, subset));
-    }
-  }
-}
-
-function increment_result(result) {
-  if (result) {
-    total_subsets_sum_divisible += 1;
-  }
-}
-
 function build_set_of_integers_from_one_to_n(n) {
   let arr = new Array(n);
   for (let i = 0; i < n; ++i) {
@@ -108,4 +57,14 @@ function build_set_of_integers_from_one_to_n(n) {
   return arr;
 }
 
-get_number_of_subsets_divisible_by_p(5, build_set_of_integers_from_one_to_n(6));
+function nice_array_printer(array) {
+  for (let i = 0; i < array.length; ++i) {
+    if (typeof array[i] == "number") {
+      console.log(array[i]);
+    } else {
+      nice_array_printer(array[i]);
+    }
+  }
+}
+
+nice_array_printer(all_subsets(build_set_of_integers_from_one_to_n(4)));

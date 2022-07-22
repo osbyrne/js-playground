@@ -14,7 +14,24 @@ function array_removed_first_val(set) {
   return arr;
 }
 
-function tree_runner(tree) {}
+function tree_runner(tree, root = 0) {
+  let subsets_validity_count = 0;
+  for (let i = 0; i < tree.length; ++i) {
+    if (typeof tree[i] === "number") {
+      subsets_validity_count += check_n_divisibility(tree[i] + root);
+    } else {
+      subsets_validity_count += tree_runner(tree[i], root + tree[i - 1]);
+    }
+  }
+  return subsets_validity_count;
+}
+
+function check_n_divisibility(n) {
+  if (n % 5 === 0) {
+    return 1;
+  }
+  return 0;
+}
 
 function subset_tree(set) {
   let tree = [];
@@ -29,4 +46,7 @@ function subset_tree(set) {
   return tree;
 }
 
-console.log(subset_tree(set_of_integers_from_one_to_n(4)));
+let n = 5;
+let set = subset_tree(set_of_integers_from_one_to_n(n));
+console.log("our set is:", set);
+console.log("subsets validity count :", tree_runner(set));

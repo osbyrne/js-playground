@@ -1,5 +1,5 @@
 function set_of_integers_from_one_to_n(n) {
-  let arr = new Array(n);
+  const arr = [];
   for (let i = 0; i < n; ++i) {
     arr[i] = i + 1;
   }
@@ -7,7 +7,7 @@ function set_of_integers_from_one_to_n(n) {
 }
 
 function array_removed_first_val(set) {
-  let arr = [];
+  const arr = [];
   for (let i = 0; i < set.length - 1; ++i) {
     arr[i] = set[i + 1];
   }
@@ -18,7 +18,7 @@ function tree_runner(tree, root = 0) {
   let subsets_validity_count = 0;
   for (let i = 0; i < tree.length; ++i) {
     if (typeof tree[i] === "number") {
-      subsets_validity_count += check_n_divisibility(tree[i] + root);
+      subsets_validity_count += check_n_divisibility_by_p(tree[i] + root, 5);
     } else {
       subsets_validity_count += tree_runner(tree[i], root + tree[i - 1]);
     }
@@ -26,15 +26,15 @@ function tree_runner(tree, root = 0) {
   return subsets_validity_count;
 }
 
-function check_n_divisibility(n) {
-  if (n % 5 === 0) {
+function check_n_divisibility_by_p(n, p) {
+  if (n % p === 0) {
     return 1;
   }
   return 0;
 }
 
 function subset_tree(set) {
-  let tree = [];
+  const tree = [];
   let next_set = set;
   for (let i = 0; i < set.length; ++i) {
     tree.push(set[i]);
@@ -46,7 +46,7 @@ function subset_tree(set) {
   return tree;
 }
 
-let n = 5;
-let set = subset_tree(set_of_integers_from_one_to_n(n));
-console.log("our set is:", set);
-console.log("subsets validity count :", tree_runner(set));
+console.log(
+  "subsets validity count :",
+  tree_runner(subset_tree(set_of_integers_from_one_to_n(8)))
+);
